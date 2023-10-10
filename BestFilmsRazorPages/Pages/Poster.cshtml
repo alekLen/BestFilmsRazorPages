@@ -1,0 +1,14 @@
+﻿@page
+@model BestFilmsRazorPages.Pages.PosterModel
+@{
+}
+<div>
+    <div class="img">
+        <img src=@Url.Content( Model.Film.Photo ) width="150" height="200" id="previewContainer">
+    </div>
+    <form asp-action="Poster" asp-controller="Home" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="@Model.Film.Id" />
+        <input type="file" name="Photo" id="fileInput" /><br />
+        <input type="submit" value="изменить постер" />
+    </form>
+</div>

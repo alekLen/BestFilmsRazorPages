@@ -22,18 +22,53 @@ namespace BestFilmsRazorPages.Pages
         [BindProperty]
         public Film Film { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? id,string? ph)
         {
-            if (id == null || _context.Films == null)
+            if (ph == null)
+            {
+                if (id == null || _context.Films == null)
+                {
+                    return NotFound();
+                }
+
+                var film = await _context.Films.FirstOrDefaultAsync(m => m.Id == id);
+                if (film == null)
+                {
+                    return NotFound();
+                }
+                Film = film;
+                return Page();
+            }
+            else
+            {
+                if (_context.Films == null)
+                {
+                    return NotFound();
+                }
+
+                var film = await _context.Films.FirstOrDefaultAsync(m => m.Id == id);
+                if (film == null)
+                {
+                    return NotFound();
+                }
+                film.Photo = ph;
+                Film = film;
+                return Page();
+            }
+        }
+        public async Task<IActionResult> OnGetAsyncToEdit(string ph,int id)
+        {
+            if (_context.Films == null)
             {
                 return NotFound();
             }
 
-            var film =  await _context.Films.FirstOrDefaultAsync(m => m.Id == id);
+            var film = await _context.Films.FirstOrDefaultAsync(m => m.Id == id);
             if (film == null)
             {
                 return NotFound();
             }
+            film.Photo = ph;   
             Film = film;
             return Page();
         }
