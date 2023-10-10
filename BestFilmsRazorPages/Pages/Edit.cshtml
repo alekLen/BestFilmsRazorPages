@@ -6,20 +6,19 @@
 }
 
 <div class="b1 ">
-    <a asp-page="./Index" class="c2">Вернуться к списку фильмов</a>
+    <a asp-page="./Index" class="c2">Вернуться к списку фильмов</a>&nbsp;&nbsp;&nbsp;<h1 class=" b1 b3">Редактирование фильма</h1>
 </div>
-<h1 class=" b1 b3">Редактирование фильма</h1>
 
 <div class="container">
     <div>
         <span class="c3">выберите файл<br />чобы изменить постер</span>
         <div class="img">
-            <img src=@Url.Content( Model.Film.Photo ) class="im i1" id="previewContainer">
+            <img src=@Url.Content( Model.Film.Photo ) class="im i2" id="previewContainer">
         </div>
         <form asp-page="./Poster"  method="post" enctype="multipart/form-data">
             <input type="hidden" asp-for="Film.Id" />
             <input type="file" name="Photo" />
-            <input type="submit" value="изменить постер" /><br />
+            <input type="submit" value="изменить постер" /><br /><br />
             <span class="c3">нажмите редактировать фильм<br /> для сохранения изменений</span>
         </form>
     </div> <div>
@@ -29,40 +28,39 @@
                     <form asp-action="Edit">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
-                            <span>Название фильма</span><br />
+                            <span>Название фильма</span>
                             <input asp-for="Film.Name" class="form-control h1" />
                             <span asp-validation-for="Film.Name" class="text-danger"></span>
-                        </div><br /><br />
+                        </div><br />
                         <div class="form-group">
                             <span>Жанр</span><br />
                             <input asp-for="Film.Genre" class="form-control h1" />
                             <span asp-validation-for="Film.Genre" class="text-danger"></span>
-                        </div><br />
+                        </div>
                         <div class="form-group">
-                            <span>Режиссёр</span><br />
+                            <span>Режиссёр</span>
                             <input asp-for="Film.Director" class="form-control h1" />
                             <span asp-validation-for="Film.Director" class="text-danger"></span>
                         </div><br />
                         <div class="form-group">
-                            <span>Год выхода фильма</span><br />
-                            <input asp-for="Film.Year" class="form-control" />
+                            <span>Год выхода фильма</span>
+                            <input asp-for="Film.Year" class="form-control h1" />
                             <span asp-validation-for="Film.Year" class="text-danger"></span>
                         </div><br />
                         <div class="form-group">
                             <span>Сюжет</span><br />
-                            <textarea asp-for="Film.Story"></textarea>
+                            <textarea asp-for="Film.Story" class="c5"></textarea>
 
                             <span asp-validation-for="Film.Story" class="text-danger"></span>
                         </div><br />
                         <div class="form-group">
-                            <span>Постер</span><br />
+                            <span>Постер</span>
                             <input asp-for="Film.Photo" class="form-control h1" readonly="readonly" />
                             <span asp-validation-for="Film.Photo" class="text-danger"></span>
                         </div><br />
 
                         <input type="hidden" asp-for="Film.Id" />
-                        <div class="form-group">
-                            <br /><br />
+                        <div class="form-group">                            
                             <input type="submit" value="Редактировать фильм" class="btn btn-primary c2" />
                         </div>
                     </form>

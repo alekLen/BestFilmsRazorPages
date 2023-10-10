@@ -44,7 +44,7 @@ body {
 .container {
     display: flex;
     flex-direction: row;
-    padding: 50px;
+    padding: 20px;
     padding-top: 0;
 }
 
@@ -63,15 +63,18 @@ body {
 }
 
 .i {
-    width: 350px;
-    height: 510px;
+    width: 400px;
+    height: 450px;
 }
 
 .i1 {
     width: 150px;
     height: 200px;
 }
-
+.i2 {
+    width: 300px;
+    height: 380px;
+}
 .im {
     max-width: 100%;
     height: auto;
@@ -174,4 +177,10 @@ body {
 
 .c4 {
     margin-top: 20px;
+}
+.c5{
+    width:360px;
+}
+.in{
+    display:inline;
 }
