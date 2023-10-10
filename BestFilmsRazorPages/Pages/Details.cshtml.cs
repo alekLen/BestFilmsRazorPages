@@ -11,9 +11,9 @@ namespace BestFilmsRazorPages.Pages
 {
     public class DetailsModel : PageModel
     {
-        private readonly BestFilmsRazorPages.Models.FilmsContext _context;
+        private readonly FilmsContext _context;
 
-        public DetailsModel(BestFilmsRazorPages.Models.FilmsContext context)
+        public DetailsModel(FilmsContext context)
         {
             _context = context;
         }

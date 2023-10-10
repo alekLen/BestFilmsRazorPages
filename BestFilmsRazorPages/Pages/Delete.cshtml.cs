@@ -11,9 +11,9 @@ namespace BestFilmsRazorPages.Pages
 {
     public class DeleteModel : PageModel
     {
-        private readonly BestFilmsRazorPages.Models.FilmsContext _context;
+        private readonly FilmsContext _context;
 
-        public DeleteModel(BestFilmsRazorPages.Models.FilmsContext context)
+        public DeleteModel(FilmsContext context)
         {
             _context = context;
         }
