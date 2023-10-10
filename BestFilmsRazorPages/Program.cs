@@ -1,5 +1,7 @@
 using BestFilmsRazorPages.Models;
+using BestFilmsRazorPages.Repository;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Core.Types;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +10,7 @@ string? connection = builder.Configuration.GetConnectionString("DefaultConnectio
 
 // добавляем контекст ApplicationContext в качестве сервиса в приложение
 builder.Services.AddDbContext<FilmsContext>(options => options.UseSqlServer(connection));
-
+//builder.Services.AddScoped<IFilmRepository, FilmRepository>();
 // Add services to the container.
 builder.Services.AddRazorPages();
 
