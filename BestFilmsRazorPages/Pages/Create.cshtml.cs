@@ -11,11 +11,15 @@ namespace BestFilmsRazorPages.Pages
 {
     public class CreateModel : PageModel
     {
-        private readonly BestFilmsRazorPages.Models.FilmsContext _context;
+        private readonly FilmsContext _context;
+        IWebHostEnvironment _appEnvironment;
 
-        public CreateModel(BestFilmsRazorPages.Models.FilmsContext context)
+        [BindProperty]
+        public IFormFile photo { get; set; } = default!;
+        public CreateModel(FilmsContext context, IWebHostEnvironment appEnvironment)
         {
             _context = context;
+            _appEnvironment = appEnvironment;
         }
 
         public IActionResult OnGet()
@@ -34,11 +38,45 @@ namespace BestFilmsRazorPages.Pages
             {
                 return Page();
             }
+            if (photo == null)
+                ModelState.AddModelError("", "вы не добавили постер");
+            DateTime today = DateTime.Today;
+            int currentYear = today.Year;
+            if (Convert.ToInt32(Film.Year) < 1895 || Convert.ToInt32(Film.Year) > currentYear)
+                ModelState.AddModelError("", "не корректный год");
+            if (photo != null)
+            {
+                // Путь к папке Files
+                string path = "/Posters/" + photo.FileName; // имя файла
 
-            _context.Films.Add(Film);
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Index");
+                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    await photo.CopyToAsync(fileStream); // копируем файл в поток
+                }
+                Film f = new();
+                f.Name = Film.Name;
+                f.Genre = Film.Genre;
+                f.Director = Film.Director;
+                f.Year = Film.Year;
+                f.Story = Film.Story;
+                f.Photo = path;
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        _context.Films.Add(f);
+                        await _context.SaveChangesAsync();
+                        return RedirectToPage("./Index");
+                    }
+                    catch
+                    {
+                        return Page();
+                    }
+                }
+                else
+                    return Page();
+            }
+            return Page();
         }
     }
 }

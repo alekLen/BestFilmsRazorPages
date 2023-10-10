@@ -5,55 +5,52 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<div class="b1 ">
+    <a asp-page="./Index" class="c2">Вернуться к списку фильмов</a>
+</div>
+<h1 class=" b1 b3">Добавление фильма</h1>
 
-<h4>Film</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Film.Name" class="control-label"></label>
-                <input asp-for="Film.Name" class="form-control" />
-                <span asp-validation-for="Film.Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Film.Genre" class="control-label"></label>
-                <input asp-for="Film.Genre" class="form-control" />
-                <span asp-validation-for="Film.Genre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Film.Director" class="control-label"></label>
-                <input asp-for="Film.Director" class="form-control" />
-                <span asp-validation-for="Film.Director" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Film.Year" class="control-label"></label>
-                <input asp-for="Film.Year" class="form-control" />
-                <span asp-validation-for="Film.Year" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Film.Story" class="control-label"></label>
-                <input asp-for="Film.Story" class="form-control" />
-                <span asp-validation-for="Film.Story" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Film.Photo" class="control-label"></label>
-                <input asp-for="Film.Photo" class="form-control" />
-                <span asp-validation-for="Film.Photo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="b1 b2">
+    <div class="img ">
+        <div class="b">
+            <form asp-action="Create" asp-controller="Home" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <span>Название фильма</span><br />
+                    <input asp-for="@Model.Film.Name" class="form-control" />
+                    <span asp-validation-for="@Model.Film.Name" class="text-danger"></span>
+                </div><br /><br />
+                <div class="form-group">
+                    <span>Жанр</span><br />
+                    <input asp-for="@Model.Film.Genre" class="form-control" />
+                    <span asp-validation-for="@Model.Film.Genre" class="text-danger"></span>
+                </div><br />
+                <div class="form-group">
+                    <span>Режиссёр</span><br />
+                    <input asp-for="@Model.Film.Director" class="form-control" />
+                    <span asp-validation-for="@Model.Film.Director" class="text-danger"></span>
+                </div><br />
+                <div class="form-group">
+                    <span>Год выхода фильма</span><br />
+                    <input asp-for="@Model.Film.Year" class="form-control" />
+                    <span asp-validation-for="@Model.Film.Year" class="text-danger"></span>
+                </div><br />
+                <div class="form-group">
+                    <span>Сюжет</span><br />
+                    <textarea asp-for="@Model.Film.Story"></textarea>
+                    <span asp-validation-for="@Model.Film.Story" class="text-danger"></span>
+                </div><br />
+                <span>Постер</span><br />
+                <input type="file" name="Photo" />
+
+                <div class="form-group">
+                    <br /><br />
+                    <input type="submit" value="Добавить фильм" class="btn btn-primary c2" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-page="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
