@@ -6,17 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BestFilmsRazorPages.Models;
+using BestFilmsRazorPages.Repository;
 
 namespace BestFilmsRazorPages.Pages
 {
     public class CreateModel : PageModel
     {
-        private readonly FilmsContext _context;
+        private readonly IFilmRepository _context;
         IWebHostEnvironment _appEnvironment;
 
         [BindProperty]
         public IFormFile photo { get; set; } = default!;
-        public CreateModel(FilmsContext context, IWebHostEnvironment appEnvironment)
+        public CreateModel(IFilmRepository context, IWebHostEnvironment appEnvironment)
         {
             _context = context;
             _appEnvironment = appEnvironment;
@@ -29,12 +30,12 @@ namespace BestFilmsRazorPages.Pages
 
         [BindProperty]
         public Film Film { get; set; } = default!;
-        
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.Films == null || Film == null)
+            if (!ModelState.IsValid || _context == null || Film == null)
             {
                 return Page();
             }
@@ -64,8 +65,8 @@ namespace BestFilmsRazorPages.Pages
                 {
                     try
                     {
-                        _context.Films.Add(f);
-                        await _context.SaveChangesAsync();
+                        _context.Create(f);
+                        await _context.Save();
                         return RedirectToPage("./Index");
                     }
                     catch

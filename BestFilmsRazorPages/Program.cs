@@ -10,7 +10,7 @@ string? connection = builder.Configuration.GetConnectionString("DefaultConnectio
 
 // добавляем контекст ApplicationContext в качестве сервиса в приложение
 builder.Services.AddDbContext<FilmsContext>(options => options.UseSqlServer(connection));
-//builder.Services.AddScoped<IFilmRepository, FilmRepository>();
+builder.Services.AddScoped<IFilmRepository, FilmRepository>();
 // Add services to the container.
 builder.Services.AddRazorPages();
 

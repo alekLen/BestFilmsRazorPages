@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BestFilmsRazorPages.Models;
+using BestFilmsRazorPages.Repository;
 
 namespace BestFilmsRazorPages.Pages
 {
     public class EditModel : PageModel
     {
-        private readonly BestFilmsRazorPages.Models.FilmsContext _context;
+        private readonly IFilmRepository _context;
 
-        public EditModel(BestFilmsRazorPages.Models.FilmsContext context)
+        public EditModel(IFilmRepository context)
         {
             _context = context;
         }
@@ -22,16 +23,16 @@ namespace BestFilmsRazorPages.Pages
         [BindProperty]
         public Film Film { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id,string? ph)
+        public async Task<IActionResult> OnGetAsync(int? id, string? ph )
         {
             if (ph == null)
             {
-                if (id == null || _context.Films == null)
+                if (id == null || _context == null)
                 {
                     return NotFound();
                 }
 
-                var film = await _context.Films.FirstOrDefaultAsync(m => m.Id == id);
+                var film = await _context.GetFilm(id.Value);
                 if (film == null)
                 {
                     return NotFound();
@@ -41,37 +42,21 @@ namespace BestFilmsRazorPages.Pages
             }
             else
             {
-                if (_context.Films == null)
+                if (_context == null)
                 {
                     return NotFound();
                 }
 
-                var film = await _context.Films.FirstOrDefaultAsync(m => m.Id == id);
+                var film = await _context.GetFilm( id.Value);
                 if (film == null)
                 {
                     return NotFound();
                 }
-                film.Photo = ph;
-                Film = film;
+                film.Photo = ph;               
+                Film = film;             
                 return Page();
             }
-        }
-        public async Task<IActionResult> OnGetAsyncToEdit(string ph,int id)
-        {
-            if (_context.Films == null)
-            {
-                return NotFound();
-            }
-
-            var film = await _context.Films.FirstOrDefaultAsync(m => m.Id == id);
-            if (film == null)
-            {
-                return NotFound();
-            }
-            film.Photo = ph;   
-            Film = film;
-            return Page();
-        }
+        }     
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
@@ -82,11 +67,11 @@ namespace BestFilmsRazorPages.Pages
                 return Page();
             }
 
-            _context.Attach(Film).State = EntityState.Modified;
+            _context.Update(Film);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _context.Save();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -105,7 +90,7 @@ namespace BestFilmsRazorPages.Pages
 
         private bool FilmExists(int id)
         {
-          return (_context.Films?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _context.FilmExists( id);
         }
     }
 }

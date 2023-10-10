@@ -6,35 +6,36 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BestFilmsRazorPages.Models;
+using BestFilmsRazorPages.Repository;
 
 namespace BestFilmsRazorPages.Pages
 {
     public class DeleteModel : PageModel
     {
-        private readonly FilmsContext _context;
+        private readonly IFilmRepository _context;
 
-        public DeleteModel(FilmsContext context)
+        public DeleteModel(IFilmRepository context)
         {
             _context = context;
         }
 
         [BindProperty]
-      public Film Film { get; set; } = default!;
+        public Film Film { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Films == null)
+            if (id == null || _context == null)
             {
                 return NotFound();
             }
 
-            var film = await _context.Films.FirstOrDefaultAsync(m => m.Id == id);
+            var film = await _context.GetFilm(id.Value);
 
             if (film == null)
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 Film = film;
             }
@@ -43,17 +44,16 @@ namespace BestFilmsRazorPages.Pages
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null || _context.Films == null)
+            if (id == null || _context == null)
             {
                 return NotFound();
             }
-            var film = await _context.Films.FindAsync(id);
+            var film = await _context.GetFilm(id.Value);
 
             if (film != null)
-            {
-                Film = film;
-                _context.Films.Remove(Film);
-                await _context.SaveChangesAsync();
+            {               
+                _context.Delete(id.Value);
+                await _context.Save();
             }
 
             return RedirectToPage("./Index");

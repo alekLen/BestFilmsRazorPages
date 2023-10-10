@@ -25,9 +25,10 @@ namespace BestFilmsRazorPages.Repository
             await _context.Films.AddAsync(f);
         }
 
-        public void Update(FilmsContext f)
+        public void Update(Film f)//(FilmsContext f)
         {
-            _context.Entry(f).State = EntityState.Modified;
+            // _context.Entry(f).State = EntityState.Modified;
+            _context.Update(f);
         }
 
         public async Task Delete(int id)
@@ -40,6 +41,10 @@ namespace BestFilmsRazorPages.Repository
         public async Task Save()
         {
             await _context.SaveChangesAsync();
+        }
+       public bool FilmExists(int id)
+        {
+            return (_context.Films?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

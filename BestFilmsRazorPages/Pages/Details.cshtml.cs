@@ -6,33 +6,34 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BestFilmsRazorPages.Models;
+using BestFilmsRazorPages.Repository;
 
 namespace BestFilmsRazorPages.Pages
 {
     public class DetailsModel : PageModel
     {
-        private readonly FilmsContext _context;
+        private readonly IFilmRepository _context;
 
-        public DetailsModel(FilmsContext context)
+        public DetailsModel(IFilmRepository context)
         {
             _context = context;
         }
 
-      public Film Film { get; set; } = default!; 
+        public Film Film { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Films == null)
+            if (id == null || _context == null)
             {
                 return NotFound();
             }
 
-            var film = await _context.Films.FirstOrDefaultAsync(m => m.Id == id);
+            var film = await _context.GetFilm( id.Value);
             if (film == null)
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 Film = film;
             }

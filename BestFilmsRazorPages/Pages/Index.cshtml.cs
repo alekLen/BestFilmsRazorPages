@@ -12,20 +12,20 @@ namespace BestFilmsRazorPages.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly FilmsContext _context;
+        private readonly IFilmRepository _context;
 
-        public IndexModel(FilmsContext context)
+        public IndexModel(IFilmRepository context)
         {
             _context = context;
         }
 
-        public IList<Film> Film { get;set; } = default!;
+        public IList<Film> Film { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
             if (_context != null)
             {
-                Film = await _context.Films.ToListAsync(); 
+                Film = await _context.GetFilmsList();
             }
         }
     }
